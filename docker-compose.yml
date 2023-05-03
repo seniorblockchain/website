@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  wordpress:
+    image: wordpress:latest
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: ********
+      WORDPRESS_DB_PASSWORD: ********
+      WORDPRESS_DB_NAME: ********
+      VIRTUAL_HOST: seniorblockchain.io
+      VIRTUAL_PORT: 80
+      LETSENCRYPT_HOST: seniorblockchain.io
+      LETSENCRYPT_EMAIL: post@seniorblockchain.io
+    networks:
+      - seniornetwork
+      - proxy
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: ********
+      MYSQL_USER: ********
+      MYSQL_PASSWORD: *******
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - seniornetwork
+
+volumes:
+  mysql_data:
+
+networks:
+  seniornetwork:
+    name: seniornetwork
+  proxy:
+    external: true
+    name: proxy
